@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restorant.Persistence.Context;
 
@@ -11,9 +12,11 @@ using Restorant.Persistence.Context;
 namespace Restorant.Persistence.Migrations
 {
     [DbContext(typeof(RestorantDbContext))]
-    partial class RestorantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230530060632_mig_12")]
+    partial class mig_12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace Restorant.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CustomerOrder", b =>
+                {
+                    b.Property<Guid>("CustomersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CustomersId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("CustomerOrder");
+                });
 
             modelBuilder.Entity("FoodOrder", b =>
                 {
@@ -189,9 +207,6 @@ namespace Restorant.Persistence.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TableId")
                         .HasColumnType("uniqueidentifier");
 
@@ -199,8 +214,6 @@ namespace Restorant.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("TableId");
 
@@ -330,6 +343,21 @@ namespace Restorant.Persistence.Migrations
                     b.ToTable("Workers");
                 });
 
+            modelBuilder.Entity("CustomerOrder", b =>
+                {
+                    b.HasOne("Restorant.Domain.Entiteis.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Restorant.Domain.Entiteis.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FoodOrder", b =>
                 {
                     b.HasOne("Restorant.Domain.Entiteis.Food", null)
@@ -400,19 +428,11 @@ namespace Restorant.Persistence.Migrations
 
             modelBuilder.Entity("Restorant.Domain.Entiteis.Order", b =>
                 {
-                    b.HasOne("Restorant.Domain.Entiteis.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Restorant.Domain.Entiteis.Table", "Table")
                         .WithMany("Orders")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
 
                     b.Navigation("Table");
                 });
@@ -431,8 +451,6 @@ namespace Restorant.Persistence.Migrations
             modelBuilder.Entity("Restorant.Domain.Entiteis.Customer", b =>
                 {
                     b.Navigation("Baskets");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("Payments");
 

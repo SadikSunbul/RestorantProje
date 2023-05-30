@@ -229,9 +229,7 @@ namespace Restorant.Api.Controllers
                 {
                     ActiveOrder = false,
                     Foods = null,
-                    Customers = null,
-                    Table = null,
-                    TotalPrice = 0,
+                    Table = null
                 };
             }
             else

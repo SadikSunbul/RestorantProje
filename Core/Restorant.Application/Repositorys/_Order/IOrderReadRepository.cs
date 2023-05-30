@@ -1,4 +1,5 @@
-﻿using Restorant.Domain.Entiteis;
+﻿using Restorant.Application.ViewModel._Order;
+using Restorant.Domain.Entiteis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,8 @@ namespace Restorant.Application.Repositorys._Order
 {
     public interface IOrderReadRepository:IReadRepository<Order>
     {
+        Task<List<VM_Order_List>> listele(Customer customer);
     }
+
+    
 }

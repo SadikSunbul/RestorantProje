@@ -9,11 +9,16 @@ namespace Restorant.Domain.Entiteis
 {
     public class Order:BaseEntity
     {
-        public double TotalPrice { get; set; }
+        public Order()
+        {
+            Foods=new HashSet<Food>();
+        }
         public bool ActiveOrder { get; set; }
-        public ICollection<Customer> Customers { get; set; }
+        public Guid TableId { get; set; }
+        public Customer Customer { get; set; }
         public ICollection<Food> Foods { get; set; }
         public Table Table { get; set; }
+        
 
     }
 }

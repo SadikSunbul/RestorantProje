@@ -54,6 +54,8 @@ namespace Restorant.Persistence
 
 			services.AddScoped<IPaymentReadRepository, PaymentReadRepository>();
 			services.AddScoped<IPaymentWriteRepository, PaymentWriteRepository>();
+
+
 		}
     }
 }

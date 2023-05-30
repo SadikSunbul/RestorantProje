@@ -22,6 +22,7 @@ namespace Restorant.Domain.Entiteis
         public ICollection<Order> Orders { get; set; }
         public ICollection<Basket> Baskets { get; set; }
         public ICollection<Like> Customers{ get; set; }
+        public ICollection<Payment> Payments{ get; set; }
         //todo resim eklenicek 
     }
 }
